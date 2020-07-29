@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace AngularUniversalDotNetCore
 {
@@ -60,14 +61,23 @@ namespace AngularUniversalDotNetCore
 
 			app.UseSpa(spa =>
 			{
-				// To learn more about options for serving an Angular SPA from ASP.NET Core,
-				// see https://go.microsoft.com/fwlink/?linkid=864501
-
+				// To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
 				spa.Options.SourcePath = "ClientApp";
 
 				if (env.IsDevelopment())
 				{
-					spa.UseAngularCliServer(npmScript: "start");
+					if (bool.Parse(Configuration["Development:RestartNgServerEveryBuild"]))
+					{
+						// NOTE: use this one, angular server will restart every time.
+
+						var npmScript = bool.Parse(Configuration["Development:IsSSR"]) ? "dev:ssr" : "start";
+						spa.UseAngularCliServer(npmScript: npmScript);
+					}
+					else
+					{
+						// NOTE: use this one, you need to run the server yourself.
+						spa.UseProxyToSpaDevelopmentServer($"http://localhost:{Configuration["Development:NgServerLocalPort"]}");
+					}
 				}
 			});
 		}
