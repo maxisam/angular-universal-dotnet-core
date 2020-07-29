@@ -8,6 +8,10 @@ import { AppServerModule } from './src/main.server';
 import { APP_BASE_HREF } from '@angular/common';
 import { existsSync } from 'fs';
 
+// This prevent errors with local server under ssl connection
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
