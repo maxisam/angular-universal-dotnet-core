@@ -27,6 +27,13 @@ namespace AngularUniversalDotNetCore
 			{
 				configuration.RootPath = "ClientApp/dist";
 			});
+
+			services.AddCors(o => o.AddPolicy("cors-policy", builder =>
+			{
+				builder.AllowAnyOrigin()
+					   .AllowAnyMethod()
+					   .AllowAnyHeader();
+			}));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,6 +41,7 @@ namespace AngularUniversalDotNetCore
 		{
 			if (env.IsDevelopment())
 			{
+				app.UseCors("cors-policy");
 				app.UseDeveloperExceptionPage();
 			}
 			else
