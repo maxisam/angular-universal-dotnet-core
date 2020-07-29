@@ -67,7 +67,7 @@ Note: if it keeps showing 403 error, reinstall the latest URL Rewrite & Applicat
 
 #### Deployment
 
-Usual deployment process just like any dotnet core web app.
+Usual deployment process just like any dotnet core web app and make sure the web.config transfer correctly (web.config should merge with web.release.config).
 
 #### Setup node environment
 
