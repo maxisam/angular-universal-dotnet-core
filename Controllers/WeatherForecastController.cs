@@ -27,7 +27,9 @@ namespace AngularUniversalDotNetCore.Controllers
 		public IEnumerable<WeatherForecast> Get()
 		{
 			var rng = new Random();
-			return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+			// wait 3 seconds for testing
+			Task.Delay(3000).Wait();
+			return Enumerable.Range(1, 1000).Select(index => new WeatherForecast
 			{
 				Date = DateTime.Now.AddDays(index),
 				TemperatureC = rng.Next(-20, 55),
