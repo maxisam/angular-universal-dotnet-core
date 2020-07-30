@@ -29,6 +29,7 @@
     "@nguniversal/express-engine": "^10.0.1",
     "preboot": "^7.0.0",
     "express": "^4.15.2",
+    "redis": "^3.0.2",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
@@ -53,6 +54,7 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~3.9.5"
+    "typescript": "~3.9.5",
+    "cross-env": "^7.0.2"
   }
 }
