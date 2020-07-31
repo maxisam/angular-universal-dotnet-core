@@ -8,10 +8,11 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dev:ssr": "ng run client-app:serve-ssr",
+    "dev:ssr": "cross-env REDIS_URL=redis://redis.domain.com:6666/0 ng run client-app:serve-ssr",
+    "dev:ssr:nocache": "ng run client-app:serve-ssr",
     "serve:ssr": "node dist/client-app/server/main.js",
     "build:ssr": "yarn && ng build --prod && ng run client-app:server:production",
-    "serve:ssr:prod": "pm2 start dist/client-app/server/main.js --name angular-universal",
+    "serve:ssr:prod": "cross-env REDIS_URL=redis://redis.domain.com:6666/0 pm2 start  dist/client-app/server/main.js --name angular-universal",
     "prerender": "ng run client-app:prerender"
   },
   "private": true,

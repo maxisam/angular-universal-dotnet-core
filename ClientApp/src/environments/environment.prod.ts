@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiHost: 'https://localhost:44392',
+  apiHost: 'https://angular-universal.your-domain.com',
 };
