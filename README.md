@@ -86,3 +86,19 @@ npm run serve:ssr:prod
 ```
 
 **_ Note:_** There are ways to run node app as service or on startup https://github.com/Unitech/pm2/issues/1079
+
+
+#### Cache Layer
+
+This project use Redis to store prendered htmls and serve it directly for the same request next time.
+
+The prerendered page will be compressed by zlib based on the accept encoding in the header. 
+
+General js and css file will be compress by express compress
+
+
+#### Compression 
+
+It only works under nginx. Because IIS url rewrite can't handle compressed files
+
+ref: https://docs.microsoft.com/en-us/archive/blogs/friis/iis-with-url-rewrite-as-a-reverse-proxy-part-2-dealing-with-500-52-status-codes
