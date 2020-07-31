@@ -32,7 +32,8 @@
     "redis": "^3.0.2",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
-    "zone.js": "~0.10.3"
+    "zone.js": "~0.10.3",
+    "compression": "^1.7.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.4",

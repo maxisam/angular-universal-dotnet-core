@@ -1,11 +1,14 @@
 import 'zone.js/dist/zone-node';
 
+import { APP_BASE_HREF } from '@angular/common';
 import { ngExpressEngine } from '@nguniversal/express-engine';
+import * as compression from 'compression';
 import * as express from 'express';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
 import { AppServerModule } from './src/main.server';
+import { getCompressStaticFilter } from './src/node-server/compression';
 import { redisCache } from './src/node-server/redis-cache';
 
 // This prevent errors with local server under ssl connection
@@ -20,6 +23,8 @@ export function app(): express.Express {
     : 'index';
 
   const redis = redisCache(indexHtml);
+  // add compression layer + only compress static file. Html will be handled by cache process
+  server.use(compression({ filter: getCompressStaticFilter() }));
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
   server.engine(
@@ -42,14 +47,37 @@ export function app(): express.Express {
     })
   );
 
-  // All regular routes use the Universal engine
-  server.get('*', redis.cachedResponse, redis.universalRenderer);
-
-  //   // All regular routes use the Universal engine
-  //   server.get('*', (req, res) => {
-  //     res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
-  //   });
-
+  // if build with compressed files, we can use this to serve the compressed file directly.
+  // server.get(
+  //   '*.*',
+  //   expressStaticGzip(distFolder, {
+  //     enableBrotli: true,
+  //     index: false,
+  //     customCompressions: [
+  //       {
+  //         encodingName: 'deflate',
+  //         fileExtension: 'zz',
+  //       },
+  //     ],
+  //     orderPreference: ['br'],
+  //     serveStatic: {
+  //       maxAge: '1y', // will be kept
+  //       cacheControl: false, // will be kept as well
+  //     },
+  //   })
+  // );
+  if (redis) {
+    // All regular routes use the Universal engine, use redis if available
+    server.get('*', redis.cachedResponse, redis.universalRenderer);
+  } else {
+    // All regular routes use the Universal engine
+    server.get('*', (req, res) => {
+      res.render(indexHtml, {
+        req,
+        providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }],
+      });
+    });
+  }
   return server;
 }
 
