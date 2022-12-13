@@ -28,7 +28,7 @@
     "@angular/router": "~10.0.5",
     "@nguniversal/express-engine": "^10.0.1",
     "preboot": "^7.0.0",
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "redis": "^3.0.2",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
